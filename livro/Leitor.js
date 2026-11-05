@@ -1,3 +1,5 @@
+import * as pdfjsLib from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs";
+
 class Leitor {    
     static voz= 0;
     static velocidade_voz= 2;
@@ -5,6 +7,7 @@ class Leitor {
     static lingua="pt-Br";   
     static sintetizador= window.speechSynthesis;
     static vozes_do_sistema= this.sintetizador.getVoices();
+    
 
 
     static ler_texto(texto_id) {
@@ -26,41 +29,37 @@ class Leitor {
         texto_requisitado.lang = this.lingua;
         this.sintetizador.speak(texto_requisitado);
     }
-}
-
-import * as pdfjsLib from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
 
 
-async function carregarTextoPDF() {
+    static async carregarTextoPDF(caminhoPDF) {
+    
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
 
-    const caminhoPDF = "../src/Livros Book for All/Alice no pais das maravilhas.pdf";
+        const documento = await pdfjsLib.getDocument(caminhoPDF).promise;
 
-    const documento = await pdfjsLib.getDocument(caminhoPDF).promise;
+        let textoCompleto = "";
 
-    let textoCompleto = "";
+        for (let i = 1; i <= documento.numPages; i++) {
 
-    for (let i = 1; i <= documento.numPages; i++) {
+            const pagina = await documento.getPage(i);
 
-        const pagina = await documento.getPage(i);
+            const conteudo = await pagina.getTextContent();
 
-        const conteudo = await pagina.getTextContent();
+            const textoPagina = conteudo.items
+                .map(item => item.str)
+                .join(" ");
 
-        const textoPagina = conteudo.items
-            .map(item => item.str)
-            .join(" ");
+            textoCompleto += textoPagina + "\n\n";
+        }
 
-        textoCompleto += textoPagina + "\n\n";
+        document.getElementById("textoExtraido").textContent =
+            textoCompleto;
+
+        console.log("Texto extraído:", textoCompleto);
+
+        alert("PDF preparado para leitura!");
     }
-
-    document.getElementById("textoExtraido").textContent =
-        textoCompleto;
-
-    console.log("Texto extraído:", textoCompleto);
-
-    alert("PDF preparado para leitura!");
 }
 
 window.Leitor = Leitor;
-window.carregarTextoPDF = carregarTextoPDF;
+window.carregarTextoPDF = Leitor.carregarTextoPDF;

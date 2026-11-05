@@ -1,4 +1,8 @@
 <?php
+session_start();
+include("utils.php");
+check_login();
+
 include "database.php";
 $id = $_GET['id'] ?? null;
 
@@ -83,12 +87,24 @@ while ($row = $data->fetch_assoc()) {
                 <p id="sinopse"><?php echo $sinopse ?> </p>
             </div>
         </section>
+
+        <section id="book-utils">
+
+            <div id="Add_to_array_button">
+                <button onclick="try_add_list(<?php echo $id ?>)">Adicionar na lista</button>
+            </div>
+
+            <div id="read">
+                <a href="../books-for-all/livro/livro.php?id=<?php echo $id = $_GET['id'] ?? null; ?>"> Ler livro</a>
+            </div>
+        </section>
     </main>
 
     <footer>
 
     </footer>
 
+    <script src="listas/listas.js"></script>
 </body>
 
 </html>
