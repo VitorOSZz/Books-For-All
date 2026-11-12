@@ -465,4 +465,38 @@ SET endereco_conteudo = CASE isbn_livro
 END
 WHERE isbn_livro BETWEEN 100001 AND 100019;
 
-SELECT * FRom livro;
+UPDATE livro
+SET endereco_capa = REPLACE(endereco_capa, "src/Capa books for All", "src/Capa Books for All");
+SELECT * FROM livro;
+
+DELIMITER $$;
+
+CREATE PROCEDURE toggle_book(IN new_id_lista INT(6), new_isbn_livro INT)
+
+BEGIN
+    DECLARE quantidade INT DEFAULT 0;
+
+    START TRANSACTION;
+
+    SELECT COUNT(*)
+    INTO quantidade
+    FROM livro_lista
+    WHERE isbn_livro = new_isbn_livro
+    AND id_lista = new_id_lista;
+
+    IF quantidade > 0 THEN
+
+        DELETE FROM livro_lista
+        WHERE isbn_livro = new_isbn_livro
+        AND id_lista = new_id_lista;
+
+    ELSE
+
+        INSERT INTO livro_lista (id_lista, isbn_livro)
+        VALUES (new_id_lista, new_isbn_livro);
+
+    END IF;
+
+    COMMIT;
+END $$;
+

@@ -1,0 +1,60 @@
+#Add_to_array_button button,
+#read a {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.dropdown {
+    background-color: var(--red);
+    color: var(--white);
+    border: 2px solid var(--red);
+}
+
+.dropdown:hover {
+    background-color: var(--darkred);
+    border-color: var(--darkred);
+    transform: scale(1.05);
+}
+
+.dropdown_content {
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+    padding: 3px 0px;
+    display: none;
+}
+
+.dropdown_content button {
+    background-color: var(--cor-texto-suave);
+    box-shadow: 0 0 10px var(--cor-borda);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+
+    text-align: center;
+    padding: 3px;
+}
+
+.dropdown_content button:hover {
+    background-color: var(--cor-texto);
+}
+
+/*
+*****
+ADICIONAR: Quando um livro já for pertencente a uma classe aparecer diferente na lista.
+*****
+*/
+.list_active {
+    background-color: red;
+}
+
+.active {
+    display: flex;
+    transition-duration: 2s;
+}

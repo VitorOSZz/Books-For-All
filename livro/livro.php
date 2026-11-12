@@ -2,26 +2,41 @@
 <html lang="en">
 
 <?php
+
 session_start();
+
 include("../utils.php");
 check_login();
 
-include "../database.php";
+include("../database.php");
+include("../add_to_lendo.php");
 
-$id = $_GET['id'] ?? null;
-// echo "id: " . $id;
+$id_usuario = (int) $_SESSION["id_usuario"];
 
-$data = $conn->query("SELECT nome, endereco_conteudo FROM livro WHERE isbn_livro = " . $id);
+$id_book = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
-$endereco_conteudo = "Livro Não encontrado";
-$nome = "Livro Não encontrado";
-while ($row = $data->fetch_assoc()) {
-    $endereco_conteudo = $row["endereco_conteudo"];
-    $nome = $row["nome"];
+if (!$id_book || $id_book <= 0) {
+    die("Livro inválido.");
 }
-//echo "<br>url: " . $endereco_conteudo;
 
-echo '<script>alert(' . check_book_in_a_list($id, "Lendo") . ');</script>';
+$sql = "SELECT nome, endereco_conteudo
+        FROM livro
+        WHERE isbn_livro = $id_book";
+
+$data = $conn->query($sql);
+
+if (!$data || $data->num_rows === 0) {
+    die("Livro não encontrado.");
+}
+
+$row = $data->fetch_assoc();
+
+$endereco_conteudo = $row["endereco_conteudo"];
+$nome = $row["nome"];
+
+if (!add_to_lendo($conn, $id_book, $id_usuario)) {
+    die("Não foi possível adicionar o livro à lista Lendo.");
+}
 
 ?>
 

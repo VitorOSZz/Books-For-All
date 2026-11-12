@@ -1,0 +1,2 @@
+- livro_info mostrar diferente as listas que o livro esta adicionado ( um background diferente )
+- Listas Favoritos e Lendo não poderem trocar os nomes
