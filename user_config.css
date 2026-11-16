@@ -14,7 +14,8 @@ main {
     color: var(--cor-texto);
 }
 
-body, main {
+body,
+main {
     background-color: var(--cor-fundo);
 }
 
@@ -24,7 +25,9 @@ main section {
     width: 100%;
 }
 
-main h1, main h2, main h3 {
+main h1,
+main h2,
+main h3 {
     color: var(--cor-principal);
 }
 
@@ -33,7 +36,8 @@ main h2 {
     margin: 10px 0px;
 }
 
-main h2, #personal_info {
+main h2,
+#personal_info {
     grid-area: info1;
 }
 
@@ -44,7 +48,7 @@ main h3 {
 
 main section form {
     background-color: var(--white);
-    
+
     border-radius: 10px;
     padding: 1.3%;
 }
@@ -78,7 +82,8 @@ main section form input {
     justify-content: space-between;
 }
 
-#password_field div input[type="password"], #password_field div input[type="text"] {
+#password_field div input[type="password"],
+#password_field div input[type="text"] {
     display: block;
     width: 100%;
 }
@@ -103,7 +108,8 @@ main section form input {
     justify-content: space-evenly;
 }
 
-#lists_buttons input, input[type="submit"] {
+#lists_buttons input,
+input[type="submit"] {
     display: block;
     background-color: var(--cor-principal);
     color: var(--white);
@@ -114,6 +120,11 @@ main section form input {
     transition: 0.5s;
 }
 
-#lists_buttons input:hover, input[type="submit"]:hover {
+#lists_buttons input:hover,
+input[type="submit"]:hover {
     background-color: var(--cor-principal-hover);
+}
+
+.block>* {
+    cursor: not-allowed;
 }

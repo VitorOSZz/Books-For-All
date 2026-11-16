@@ -1,14 +1,44 @@
 <?php
     include ("database.php");
+    session_start();
     
-    /* Colocar check_login with admin*/
+    /* Colocar check_login with admin */
     include "utils.php";
     check_login();
+
+    if ($_SESSION["adm"] == false) {
+        echo "fodasse";
+    }
+
     $sql = "SELECT isbn_livro, nome, endereco_capa FROM livro";
     $query = $conn->query($sql);
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html><?php
+include("database.php");
+$email = $_POST['email'];
+$senha = $_POST['senha'];
+
+$sql = "SELECT id_usuario, email, senha, is_adm FROM usuario WHERE ((email = '$email') && (senha = '$senha'))";
+$query = $conn->query($sql);
+$row = $query->fetch_assoc();
+if ($row == true) {
+    session_start();
+    if ($row["is_adm"] == true) {
+        $_SESSION["id_usuario"] = $row["id_usuario"];
+        $_SESSION["adm"] = $row["is_adm"];
+        header("Location: adm.php");
+    }
+    else {
+    $_SESSION["adm"] = $row["is_adm"];
+    $_SESSION["id_usuario"] = $row["id_usuario"];
+    header("Location: home.php");
+    }
+} else {
+    echo "login not found";
+}
+
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

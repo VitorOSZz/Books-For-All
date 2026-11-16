@@ -51,7 +51,7 @@ ADICIONAR: Quando um livro já for pertencente a uma classe aparecer diferente n
 *****
 */
 .list_active {
-    background-color: red;
+    background: color-mix(in srgb, var(--cor-texto) 90%, white 10%) !important;
 }
 
 .active {

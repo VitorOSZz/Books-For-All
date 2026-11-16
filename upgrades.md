@@ -1,2 +1,1 @@
-- livro_info mostrar diferente as listas que o livro esta adicionado ( um background diferente )
-- Listas Favoritos e Lendo não poderem trocar os nomes
+- Listas Favoritos e Lendo não poderem trocar os nomes pelo front-end e back-end

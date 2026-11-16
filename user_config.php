@@ -13,7 +13,8 @@ $row = $sql ->fetch_assoc();
 $usuario = array(
     "nome" => $row["nome"],
     "telefone" => $row["telefone"],
-    "data_nascimento" => $row["data_nasc"]
+    "data_nascimento" => $row["data_nasc"],
+    "senha" => $row["senha"]
 );
 
 
@@ -32,6 +33,10 @@ if (isset($usuario["data_nascimento"])) {
     #$date = "$date[2]/$date[1]/$date[0]";
     $date = $date[0];
     $usuario["data_nascimento"] = $date;
+}
+
+if (!isset($usuario["senha"])) {
+    $usuario["senha"] = "Como você não tem senha?";
 }
 
 ?>
@@ -81,9 +86,9 @@ if (isset($usuario["data_nascimento"])) {
                     </div>
 
                     <div id="password_field">
-                        <label for="senha">Senha</label>
+                        <label for="password_field">Senha</label>
                         <div>
-                            <input type="password" name="senha" id="password_input" value="oi">
+                            <input type="password" name="password_field" id="password_input" value="<?php echo($usuario["senha"])?>">
                             <input type="checkbox" onclick="toggle_password()">
                         </div>
                     </div>
@@ -99,25 +104,40 @@ if (isset($usuario["data_nascimento"])) {
                 <h3>Listas</h3>
 
                 <div id="dynamic_lists">
-                    <div>
-                        <label for="id_favoritos"></label>
-                        <input type="text" name="id_favoritos" value="Favoritos">
-                    </div>
-
                     <?php
 
-                    $query = "SELECT id_lista, nome FROM lista WHERE id_usuario = $id_usuario";
-                    $data = $conn -> query($query);
+                        $query = "SELECT id_lista, nome FROM lista WHERE id_usuario = $id_usuario";
+                        $data = $conn->query($query);
 
-                    while ($row = $data->fetch_assoc()) {
-                        $id_lista = $row['id_lista'];
-                        $nome = $row['nome'];
-                        echo
-                        "<div>
-                          <label for=$id_lista></label>
-                          <input type='text' name='$id_lista' value='$nome'>
-                        </div>";
-                    }
+                        if ($data && $data->num_rows > 0) {
+
+                            while ($row = $data->fetch_assoc()) {
+
+                                $id_lista = $row['id_lista'];
+                                $nome = $row['nome'];
+
+                                echo "
+                                    <div>
+                                        <label for='$id_lista'></label>
+                                        <input type='text' id='$id_lista' name='$id_lista' value='$nome'>
+                                    </div>
+                                ";
+                            }
+
+                        } else {
+
+                            echo '
+                                <div>
+                                    <label for="id_favoritos"></label>
+                                    <input type="text" id="id_favoritos" name="id_favoritos" value="Favoritos">
+                                </div>
+
+                                <div>
+                                    <label for="id_lendo"></label>
+                                    <input type="text" id="id_lendo" name="id_lendo" value="Lendo">
+                                </div>
+                            ';
+                        }
 
                     ?>
 
@@ -135,6 +155,9 @@ if (isset($usuario["data_nascimento"])) {
     </main>
 
     <script>
+
+        let new_lists = 0;
+
         function toggle_password() {
             const input_password = document.querySelector("#password_input");
 
@@ -149,16 +172,27 @@ if (isset($usuario["data_nascimento"])) {
             console.log("penes");
             const lists = document.querySelector("#dynamic_lists");
             const label = document.createElement("label");
-            label.setAttribute("for", "new");
+            label.setAttribute("for", `new${new_lists}`);
 
             const input = document.createElement("input");
             input.type = "text";
-            input.id = "new";
+            input.name = `new${new_lists}`;
             input.value = "Nova lista";
 
             lists.appendChild(label);
             lists.appendChild(input);
+            new_lists++;
         }
+
+        const dynamic_lists = document.querySelectorAll("#dynamic_lists div");
+
+        dynamic_lists.forEach(div => {
+            const input = div.querySelector("input");
+
+            if (input.value === "Lendo" || input.value === "Favoritos") {
+                div.classList.add("block");
+            }
+        });
     </script>
     
 </body>

@@ -88,9 +88,9 @@ while ($row = $data->fetch_assoc()) {
                         $already_in_list = $check_already_list->fetch_assoc();
 
                         if ($already_in_list == true) {
-                            echo "<button type='button' onclick='change_list($id, $id_lista)' class='list_active'>$nome_lista</button>";
+                            echo "<button type='button' onclick='change_list($id, $id_lista)' class='list_active' id='$id'>$nome_lista</button>";
                         } else {
-                            echo "<button type='button' onclick='change_list($id, $id_lista)'>$nome_lista</button>";
+                            echo "<button type='button' onclick='change_list($id, $id_lista)' id='$id'>$nome_lista</button>";
                         }
 
                     }

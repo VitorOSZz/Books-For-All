@@ -36,11 +36,15 @@ if (!empty($campos)) {
 
     try {
         $query = $conn->query($sql);
+        header("Location: user_config.php");
     } catch (mysqli_sql_exception $e) {
         if ($e->getCode() == 1062) {
+            echo $e->getMessage();
             die("Não foi possível alguma informação já pertence a outra conta!");
         }
+    } catch (Exception $e) {
+        echo $e->getMessage();
     }
 }
-header("Location: home.php");
+
 ?>

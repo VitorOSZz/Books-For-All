@@ -43,6 +43,9 @@ async function change_list(id_book, list) {
             throw new Error(result.message);
         }
 
+        const book = document.getElementById(id_book);
+        book.classList.toggle("list_active");
+
         alert(result.message);
 
     } catch (error) {
